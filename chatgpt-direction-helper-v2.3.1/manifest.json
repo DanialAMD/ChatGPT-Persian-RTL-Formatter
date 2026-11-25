@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT RTL/LTR Helper Pro",
+  "version": "2.3.1",
+  "description": "Smart Persian/English direction, Persian text tools, prompt counters, chat layout controls, and local ChatGPT Work/Codex usage display.",
+  "author": {
+    "email": "danialamd@gmail.com"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*"
+  ],
+  "action": {
+    "default_title": "ChatGPT RTL/LTR Helper Pro",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

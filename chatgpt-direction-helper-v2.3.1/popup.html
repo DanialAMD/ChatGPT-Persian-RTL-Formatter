@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChatGPT RTL/LTR Helper Pro</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="panel">
+    <header class="hero">
+      <img src="icon48.png" alt="" class="logo" />
+      <div>
+        <h1>RTL/LTR Helper Pro</h1>
+        <p>کنترل هوشمند فارسی/انگلیسی ChatGPT</p>
+      </div>
+      <span class="version" id="appVersion"></span>
+    </header>
+
+    <section class="card accent-card">
+      <div class="label">حالت تایپ</div>
+      <div class="segmented" role="radiogroup" aria-label="Typing direction mode">
+        <button type="button" data-mode="auto">خودکار</button>
+        <button type="button" data-mode="rtl">RTL</button>
+        <button type="button" data-mode="ltr">LTR</button>
+      </div>
+    </section>
+
+    <section class="card usage-card" aria-labelledby="usageTitle">
+      <div class="usage-head">
+        <div>
+          <div class="label" id="usageTitle">Usage · Work / Codex</div>
+          <div class="usage-sub" id="usagePlan">در حال دریافت...</div>
+        </div>
+        <button id="refreshUsage" class="icon-button" type="button" title="بروزرسانی Usage" aria-label="بروزرسانی Usage">↻</button>
+      </div>
+
+      <div id="usageContent" class="usage-content" hidden>
+        <div class="usage-window" id="usage5h" hidden>
+          <div class="usage-line">
+            <b>۵ ساعته</b>
+            <span><strong class="usage-left">—</strong> باقی‌مانده</span>
+          </div>
+          <div class="usage-progress" aria-hidden="true"><i></i></div>
+          <div class="usage-meta"><span class="usage-used">—</span><span class="usage-reset">—</span></div>
+        </div>
+
+        <div class="usage-window" id="usageWeekly" hidden>
+          <div class="usage-line">
+            <b>هفتگی</b>
+            <span><strong class="usage-left">—</strong> باقی‌مانده</span>
+          </div>
+          <div class="usage-progress" aria-hidden="true"><i></i></div>
+          <div class="usage-meta"><span class="usage-used">—</span><span class="usage-reset">—</span></div>
+        </div>
+      </div>
+
+      <div id="usageState" class="usage-state">در حال دریافت Usage...</div>
+      <div class="usage-note">فقط هنگام باز شدن پنل خوانده می‌شود؛ توکن ورود ذخیره نمی‌شود.</div>
+    </section>
+
+    <section class="card settings">
+      <label class="row">
+        <span><b>جهت هر پاراگراف جدا</b><small>در حالت Auto، فارسی و انگلیسی هر خط مستقل تنظیم می‌شوند</small></span>
+        <input id="perParagraphPrompt" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>ذخیره خودکار Draft</b><small>متن ارسال‌نشده بعد از Refresh برمی‌گردد</small></span>
+        <input id="draftAutosave" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>شمارنده Prompt</b><small>Character / Word / Token تقریبی کنار نوار شناور</small></span>
+        <input id="showCounter" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>Copy روی کدها</b><small>یک دکمه Copy کوچک روی Code Blockها</small></span>
+        <input id="codeCopyButtons" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>پنل ابزار متن</b><small>نیم‌فاصله، علائم فارسی، تبدیل اعداد و Copy as Markdown</small></span>
+        <input id="showTextTools" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>Focus Mode</b><small>سایدبار را مخفی می‌کند تا فضای چت خلوت‌تر شود</small></span>
+        <input id="focusMode" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>نوار شناور</b><small>AUTO / RTL / LTR داخل صفحه</small></span>
+        <input id="showToolbar" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>کدها همیشه LTR</b><small>بلوک‌های کد چپ‌چین می‌مانند</small></span>
+        <input id="forceCodeLtr" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>جهت خودکار پیام‌ها</b><small>فارسی راست‌چین، انگلیسی چپ‌چین</small></span>
+        <input id="autoMessageDirection" type="checkbox" />
+      </label>
+      <label class="row">
+        <span><b>یادآوری حالت آخر</b><small>Auto / RTL / LTR بین دفعات حفظ شود</small></span>
+        <input id="rememberLastMode" type="checkbox" />
+      </label>
+    </section>
+
+    <section class="card controls">
+      <label>
+        <span>فونت</span>
+        <select id="fontFamily">
+          <option value="system">System</option>
+          <option value="tahoma">Tahoma</option>
+          <option value="vazirmatn">Vazirmatn / Vazir</option>
+          <option value="iransans">IRANSans</option>
+        </select>
+      </label>
+      <label>
+        <span>اندازه متن <output id="fontSizeValue"></output></span>
+        <input id="fontSize" type="range" min="13" max="22" step="1" />
+      </label>
+      <label>
+        <span>عرض چت <output id="chatWidthValue"></output></span>
+        <input id="chatWidth" type="range" min="560" max="1200" step="20" />
+      </label>
+    </section>
+
+    <section class="card tools">
+      <button id="exportSettings" type="button">خروجی تنظیمات</button>
+      <button id="importSettings" type="button">ورودی تنظیمات</button>
+      <button id="resetSettings" type="button" class="danger">ریست</button>
+      <input id="importFile" type="file" accept="application/json,.json" hidden />
+      <div id="toast" aria-live="polite"></div>
+    </section>
+
+    <section class="shortcuts">
+      <span>Alt + Shift + A</span><em>Auto</em>
+      <span>Alt + Shift + R</span><em>RTL</em>
+      <span>Alt + Shift + L</span><em>LTR</em>
+      <span>Alt + Shift + T</span><em>Text tools</em>
+      <span>Alt + Shift + F</span><em>Focus mode</em>
+    </section>
+
+    <footer>ChatGPT RTL/LTR Helper Pro · <span id="footerVersion"></span></footer>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
